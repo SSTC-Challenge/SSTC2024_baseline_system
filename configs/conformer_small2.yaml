@@ -1,0 +1,65 @@
+preprocessor:
+  sample_rate: 16000
+  normalize: "per_feature"
+  window_size: 0.025
+  window_stride: 0.01
+  window: "hann"
+  features: 80
+  n_fft: 512
+  log: true
+  frame_splicing: 1
+  dither: 0.00001
+  pad_to: 0
+  pad_value: 0.0
+
+encoder:
+  feat_in: 80
+  feat_out: -1 # you may set it if you need different output size other than the default d_model
+  n_layers: 8
+  d_model: 176
+
+  # Sub-sampling params
+  subsampling: striding # vggnet, striding, stacking or stacking_norm, dw_striding
+  subsampling_factor: 2 # must be power of 2 for striding and vggnet
+  subsampling_conv_channels: -1 # -1 sets it to d_model
+
+  # Feed forward module's params
+  ff_expansion_factor: 4
+
+  # Multi-headed Attention Module's params
+  self_attention_model: rel_pos # rel_pos or abs_pos
+  n_heads: 4 # may need to be lower for smaller d_models
+  # [left, right] specifies the number of steps to be seen from left and right of each step in self-attention
+  att_context_size: [-1, -1] # -1 means unlimited context
+  xscaling: true # scales up the input embeddings by sqrt(d_model)
+  untie_biases: true # unties the biases of the TransformerXL layers
+  pos_emb_max_len: 5000
+
+  # Convolution module's params
+  conv_kernel_size: 31
+  conv_norm_type: 'batch_norm' # batch_norm or layer_norm or groupnormN (N specifies the number of groups)
+
+  ### regularization
+  dropout: 0.1 # The dropout used in most of the Conformer Modules
+  dropout_emb: 0.0 # The dropout used for embeddings
+  dropout_att: 0.1 # The dropout for multi-headed attention modules
+  decoder_mode: false
+
+optim:
+  name: adamw
+  lr: 2.0
+  # optimizer arguments
+  betas: [0.9, 0.98]
+  # less necessity for weight_decay as we already have large augmentations with SpecAug
+  # you may need weight_decay for large models, stable AMP training, small datasets, or when lower augmentations are used
+  # weight decay of 0.0 with lr of 2.0 also works fine
+  weight_decay: 1e-3
+
+  # scheduler setup
+  sched:
+    name: NoamAnnealing
+    d_model: 512
+    # scheduler config override
+    warmup_steps: 10000
+    warmup_ratio: null
+    min_lr: 1e-6
