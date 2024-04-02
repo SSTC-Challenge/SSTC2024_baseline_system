@@ -93,14 +93,14 @@ Running:
 
 ```
 python train.py --save_dir 8vc \
-		--data_name train_1 train_2 train_3 train_4 train_5 train_6 train_7 train_8 \
-        --warmup_epochs 1 --dur_range 2 2 \
-		--val_data_name vc-dev \
-	    --batch_size 512 --workers 40 \
-	    --mels 80 --fft 512 \
-		--model ConformerMFA --embd_dim 256 \
-		--classifier ArcFace --angular_m 0.2 --angular_s 32 --dropout 0 \
-		--gpu 0,1,2,3 --epochs 25  --start_epoch 0 --lr 0.001 &
+    --data_name train_1 train_2 train_3 train_4 train_5 train_6 train_7 train_8 \
+    --warmup_epochs 1 --dur_range 2 2 \
+    --val_data_name vc-dev \
+    --batch_size 512 --workers 40 \
+    --mels 80 --fft 512 \
+    --model ConformerMFA --embd_dim 256 \
+    --classifier ArcFace --angular_m 0.2 --angular_s 32 --dropout 0 \
+    --gpu 0,1,2,3 --epochs 25  --start_epoch 0 --lr 0.001 &
 ```
 
 #### Step 4. Valuation model
@@ -125,9 +125,9 @@ Running:
 
 ```
 python scoring.py --save_dir 8vc \
-	--val_data_name vc-dev --vc_method dev_1 --val_save_name dev_1  --model_num 24 \
+    --val_data_name vc-dev --vc_method dev_1 --val_save_name dev_1  --model_num 24 \
     --onlyscore False --scoring True --trials dev_trials \
-	--gpu 0 &
+    --gpu 0 &
 ```
 
 #### Performance of baseline system
@@ -136,6 +136,6 @@ python scoring.py --save_dir 8vc \
 | --------- | --------- | --------- | ---------- | ---------- | ---------- |
 | 9.397%    | 8.619%    | 7.671%    | 7.594%     | 7.507%     | 12.885%    |
 | **Dev-7** | **Dev-8** | **Dev-9** | **Dev-10** | **Dev-11** | **Dev-12** |
-| 32.484%   | 28.795    | 34.045%   | 45.772%    | 17.209%    | 20.808%    |
+| 32.484%   | 28.795%    | 34.045%   | 45.772%    | 17.209%    | 20.808%    |
 
 **Download Link:  Will be released soon.**
