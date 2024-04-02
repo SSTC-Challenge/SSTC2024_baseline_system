@@ -1,0 +1,5 @@
+librosa==0.10.1
+omegaconf==2.2.3
+python_speech_features==0.6
+scipy==1.7.3
+Cython
