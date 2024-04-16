@@ -87,7 +87,7 @@ The following are the pre-trained model (half small MFA_Conformer) results on vo
 
 | Vox1-O (EER) | Download Link         |
 | ------------ | --------------------- |
-| 1.145%       | Will be released soon |
+| 1.145%       | [Download](https://drive.google.com/file/d/1TO0NuPJJkXR6TfUupMP9XQyUBdSdGCva/view?usp=drive_link) |
 
 Running:
 
@@ -138,4 +138,10 @@ python scoring.py --save_dir 8vc \
 | **Dev-7** | **Dev-8** | **Dev-9** | **Dev-10** | **Dev-11** | **Dev-12** |
 | 32.484%   | 28.795%    | 34.045%   | 45.772%    | 17.209%    | 20.808%    |
 
-**Download Link:  Will be released soon.**
+**Download Link:  [Download](https://drive.google.com/file/d/1K5S7aUVUTqgPVgqQx7fpQWO1ZbYuJ6MX/view?usp=drive_link).**
+
+
+
+##### **One tip: **
+
+**you may use the method category information to help improve the performance of your model.**
