@@ -142,6 +142,6 @@ python scoring.py --save_dir 8vc \
 
 
 
-##### **One tip: **
+##### One tip: 
 
 **you may use the method category information to help improve the performance of your model.**
