@@ -203,7 +203,7 @@ python scoring_method.py --save_dir 8vc_method \
 # Dev-1's method embeddings are saved in "dev_1_cla_24.npy"
 ```
 
-The details can be found in the xx file, and the steps are as follows:
+The details can be found in the "osnn.ipynb" file, and the steps are as follows:
 
 1. Extract all method embeddings from the training set with the trained method recognition model, and randomly partition them into two subsets at a ratio of 1:9, denoted as TS1 and TS9.
 2. Take the subset TS9 and calculate the average of embeddings for each method to obtain the class center of each method.
