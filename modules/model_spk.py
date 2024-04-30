@@ -65,4 +65,41 @@ class ConformerMFA(nn.Module):
         else:
             return x_utt
 
+class Adaptor(nn.Module):
+    def __init__(self, num_layers, in_dim, hidden_dim, embedding_size, dropout=0):
+        super().__init__()
+        self.proj_layers = nn.ModuleList([
+            nn.Sequential(
+                nn.Linear(in_dim, hidden_dim),
+                nn.LayerNorm(hidden_dim),
+                nn.ReLU(True),
+                nn.Linear(hidden_dim, hidden_dim),
+            ) for _ in range(num_layers)
+        ])
+        front_out = num_layers * hidden_dim
+        self.mfa_norm = nn.LayerNorm(front_out)
+        self.pool = AttentiveStatisticsPooling(front_out)
+        self.utt_norm = nn.BatchNorm1d(front_out*2)
+        self.bottleneck = nn.Linear(front_out*2, embedding_size)
+        self.drop = nn.Dropout(dropout) if dropout else None
+    
+    def forward(self, x):
+        x = torch.cat([self.proj_layers[i](x[i]) for i in range(len(x))], dim=-1)
+        x = self.mfa_norm(x).transpose(1, 2)
+        x = self.pool(x)[:, :, 0]
+        x = self.utt_norm(x)
+        x = self.bottleneck(x)
+        return self.drop(x) if self.drop else x
 
+class ConformerMFA_MultiTask(nn.Module):
+    def __init__(self, cfg, embedding_size, dropout=0.5, real_feat=False):
+        super().__init__()
+        self.cfg = cfg
+        self.front = ConformerEncoderMFA(**cfg)
+        self.src_feat = Adaptor(cfg['n_layers'], cfg['d_model'], 128, embedding_size, dropout)
+        self.tgt_feat = Adaptor(cfg['n_layers'], cfg['d_model'], 128, embedding_size, dropout)
+
+    def forward(self, x, xlen):
+        x = x[:, :, :xlen.max()]
+        _, _, x_utt = self.front(audio_signal=x, length=xlen) # x_utt: BxTxD; x: BxDxT
+        return self.src_feat(x_utt), self.tgt_feat(x_utt)
